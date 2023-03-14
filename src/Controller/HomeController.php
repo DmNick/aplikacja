@@ -8,7 +8,8 @@ class HomeController extends AbstractController {
 
     #[Route('/', name: 'home')]
 
-    public function index(){
+    public function index(): Response
+    {
         return $this->render('home/home.twig');
     }
     
