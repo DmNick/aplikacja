@@ -1,17 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Rejestracja{% endblock %}
+{% block customcss %}
+<style>
+html,
+body {
+  height: 100%;
+}
 
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+</style>
+{% endblock %}
 {% block body %}
-    <h1>Register</h1>
+    
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <main class="form-signin w-100 m-auto">
+        <form action="{{ path('app_register') }}" method="post">
+          <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57">
+          <h1 class="h3 mb-3 fw-normal">Rejestracja</h1>
+          {{ form_start(registrationForm) }}
+          <div class="form-floating">
+            {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+          </div>
+          <div class="form-floating">
+            {{ form_row(registrationForm.plainPassword, {label: 'Password','attr': {'class': 'form-control'}}) }}
+          </div>
+          <div class="checkbox mb-3">
+            <label>
+                {{ form_row(registrationForm.agreeTerms) }}
+            </label>
+          </div>
+          <div class="mb-3">Masz już konto? <a href="{{ path('app_login') }}">Zaloguj się</a></div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Zarejestruj</button>
+          <p class="mt-5 mb-3 text-muted">&clubs; 2023 Dominik Banik</p>
+          {{ form_end(registrationForm) }}
+        </form>
+      </main>
 {% endblock %}
