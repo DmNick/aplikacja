@@ -3,5 +3,6 @@
 /* Not required for template or sticky footer method. */
 
 main > .container {
+  display: block;
   padding: 60px 15px 0;
 }
