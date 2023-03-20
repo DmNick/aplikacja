@@ -58,7 +58,7 @@ body {
       {% if error %}
         <div class="mb-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-        <input type="hidden" name="_target_path" value="/">
+        {# <input type="hidden" name="_target_path" value="/"> #}
       <button class="w-100 btn btn-lg btn-primary" type="submit">Zaloguj</button>
       <p class="mt-5 mb-3 text-muted">&clubs; 2023 Dominik Banik</p>
     </form>

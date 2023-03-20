@@ -47,14 +47,14 @@ body {
           <h1 class="h3 mb-3 fw-normal">Rejestracja</h1>
           {{ form_start(registrationForm) }}
           <div class="form-floating">
-            {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(registrationForm.email) }}
           </div>
           <div class="form-floating">
-            {{ form_row(registrationForm.plainPassword, {label: 'Password','attr': {'class': 'form-control'}}) }}
+            {{ form_row(registrationForm.plainPassword, {label: 'Hasło'}) }}
           </div>
           <div class="checkbox mb-3">
             <label>
-                {{ form_row(registrationForm.agreeTerms) }}
+                {{ form_row(registrationForm.agreeTerms, {label: 'Akceptuję regulamin serwisu'}) }}
             </label>
           </div>
           <div class="mb-3">Masz już konto? <a href="{{ path('app_login') }}">Zaloguj się</a></div>
