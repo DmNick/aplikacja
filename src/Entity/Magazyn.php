@@ -17,8 +17,8 @@ class Magazyn
     #[ORM\Column(length: 128, unique: true)]
     private ?string $nazwa = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable:true)]
-    private ?int $domyslny = null;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $domyslny = 0;
 
     public function getNazwa(): ?string
     {
@@ -34,7 +34,7 @@ class Magazyn
 
     public function getDomyslny(): ?int
     {
-        $domyslny = $this->domyslny ?? '0';
+        $domyslny = $this->domyslny;
         
         return $domyslny;
     }

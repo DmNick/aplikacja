@@ -12,27 +12,52 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MagazynController extends AbstractController
 {
-    #[Route('/magazyn', name: 'app_magazyn')]
+    #[Route('/magazyn/add', name: 'app_magazyn')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $magazyn = new Magazyn();
         $form = $this->createForm(MagazynType::class, $magazyn);
         $form->handleRequest($request);
-        
+
+        // if ($request){
+        // var_dump("test");die();
+        // }
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             //$magazyn->setDomyslny('0');
+
 
             $entityManager->persist($magazyn);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_magazyn',['completed' => 'success', 'name' => $magazyn -> getNazwa()]);
+            return $this->redirectToRoute('app_magazyn_show', ['completed' => true, 'name' => $magazyn->getNazwa()]);
         }
+        if (isset($_GET['completed'])) {
+            return $this->render('magazyn/index.html.twig', ['get' => $_GET, 'magazynForm' => $form->createView()]);
+        } else {
+            return $this->render('magazyn/add.html.twig', [
+                'controller_name' => 'MagazynController',
+                'magazynForm' => $form->createView(),
+            ]);
+        }
+    }
 
-        return $this->render('magazyn/index.html.twig', [
-            'controller_name' => 'MagazynController',
-            'magazynForm' => $form->createView(),
-        ]);
+    #[Route('/magazyn', name: 'app_magazyn_show')]
+    public function show(EntityManagerInterface $entityManager): Response
+    {
+        $postRepository = $entityManager -> getRepository(Magazyn::class);
+        $magazyny = $postRepository->findAll();
+        $html = '';
+        //$html = var_dump($magazyny);
+        // foreach($magazyny as $result){
+        //     $html .= $result->getNazwa() . '<br>';
+        // }
+
+        // return new Response($html);
+
+        return $this->render('magazyn/index.html.twig', ['result' => $magazyny]);
     }
 }

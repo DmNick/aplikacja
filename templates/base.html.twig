@@ -32,10 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/magazyn">Dodaj magazyn</a>
-                    </li>
+                    {% if is_granted('ROLE_USER') %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Asortyment</a>
                     </li>
@@ -51,8 +48,16 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Wprowadenie towaru</a></li>
                             <li><a class="dropdown-item" href="#">Wydanie towaru</a></li>
-                            <li><a class="dropdown-item" href="#">Zmień magazyn</a></li>
+                            <li><a class="dropdown-item" href="/magazyn">Zmień magazyn</a></li>
                             <li><a class="dropdown-item" href="#">Profil</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/magazyn/add">Dodaj magazyn</a></li>
+                            <li><a class="dropdown-item" href="/registerUser">Dodaj użytkownika</a></li>
+                            <li><a class="dropdown-item" href="/article">Dodaj artykuł</a></li>
+                            {% endif %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -70,12 +75,14 @@
     </header>
     {% endblock header %}
 
-    <main>
+    
     {% block main %}
+    <main>
     {% block container %}
     {% endblock container %}
-    {% endblock main %}
     </main>
+    {% endblock main %}
+    
     
     {% block footer %}
     {% endblock footer %}

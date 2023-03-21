@@ -12,4 +12,3 @@ import './styles/app.scss';
 import './bootstrap.js';
 const $ = require('jquery');
 import 'bootstrap';
-console.log("test");

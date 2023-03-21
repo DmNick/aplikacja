@@ -1,24 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Stwórz magazyn{% endblock %}
+{% block title %}Magazyny{% endblock %}
 
 {% block main %}
-<main class="form-signin col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
-    <form action="{{ path('app_magazyn') }}" method="post">
-      <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57">
-      <h1 class="h3 mb-3 fw-normal">Nowy magazyn</h1>
-      {{ form_start(magazynForm) }}
-      <div class="form-floating">
-        {{ form_row(magazynForm.nazwa, {label: 'Nazwa'}) }}
-      </div>
-      <div class="form-floating">
-        {{ form_row(magazynForm.domyslny, {label: 'Czy domyślny? (0 lub 1)', attr: {'min':'0','max':'1'}}) }}
-      </div>
-      
 
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
-      <p class="mt-5 mb-3 text-muted">&clubs; 2023 Dominik Banik</p>
-      {{ form_end(magazynForm) }}
-    </form>
-  </main>
+{% for item in result %}
+<div>{{ item.id }}</div><div>{{ item.nazwa }}</div><div>{{ item.domyslny }}</div>
+{% endfor %}
+
+
 {% endblock %}
