@@ -4,9 +4,12 @@
 
 {% block main %}
 
-{% for item in result %}
-<div>{{ item.id }}</div><div>{{ item.nazwa }}</div><div>{{ item.domyslny }}</div>
-{% endfor %}
 
-
+<main class="col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
+<div class="list-group">
+    {% for item in result %}
+    <a href="/magazyn/change/{{item.id}}" name={{ item.id }} class="list-group-item list-group-item-action {% if item.domyslny %}active{% endif %}" {% if item.domyslny %}aria-current="true"{% endif %}>{{ item.nazwa }}</a>
+    {% endfor %}
+</div>
+</main>
 {% endblock %}

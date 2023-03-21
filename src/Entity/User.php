@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\TraitSpace\createdTrait;
+use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TraitSpace\idTrait;
 use App\Repository\UserRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\TraitSpace\createdTrait;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
