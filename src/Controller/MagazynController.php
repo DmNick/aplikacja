@@ -21,7 +21,7 @@ class MagazynController extends AbstractController
         $magazyn = new Magazyn();
         $form = $this->createForm(MagazynType::class, $magazyn);
         $form->handleRequest($request);
-
+        
         // if ($request){
         // var_dump("test");die();
         // }
@@ -29,7 +29,6 @@ class MagazynController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             //$magazyn->setDomyslny('0');
-
 
             $entityManager->persist($magazyn);
             $entityManager->flush();
@@ -66,16 +65,16 @@ class MagazynController extends AbstractController
     #[Route('/magazyn/change/{id}', name: 'app_magazyn_change')]
     public function change(EntityManagerInterface $entityManager, int $id, UserInterface $user = null): Response
     {
-        $getUser = $this -> getUser();
-        $userId = $user->getId()??null;
-        // $postUserRepository =  $entityManager -> getRepository(User::class);
-        // $postOne = $postUserRepository -> findOneBy(['id'=>$this -> getUser() -> getId()]);
-        // $postOne -> setMagazyn(['nazwa' => 'GŁÓWNY']);
-        // $entityManager->persist($postTwo);
-        //$entityManager -> flush();
+        $postUserRepository = $entityManager -> getRepository(User::class);
+        $postOne = $postUserRepository -> findOneBy(['id' => $this->getUser()->getId()]);
+        $postOne -> setIdMagazynu($entityManager->getReference(Magazyn::class, $id));
+        $entityManager -> flush();
         //$user = $entityManager->getRepository(User::class)->findAll();
         
         //$html = $id;
-        return new Response( var_dump($getUser)?? null);
+        //return new Response($this -> json(['user'=>$postTwo]));
+        //return new Response($this->json(['user'=>getUser()],200));
+        //return new Response(var_dump($postOne)??null);
+        return $this->redirectToRoute('app_magazyn_show');
     }
 }

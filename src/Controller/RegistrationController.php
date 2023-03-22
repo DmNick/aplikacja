@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Magazyn;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +33,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $user->setIdMagazynu($entityManager->getReference(Magazyn::class, '2'));
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email

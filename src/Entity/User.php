@@ -30,6 +30,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\ManyToOne(targetEntity: Magazyn::class, inversedBy: 'users', cascade: ['ondelete'=>'persist', 'onupdate'=>'persist'])]
+    private $idMagazynu;
+
     
     public function getEmail(): ?string
     {
@@ -87,6 +90,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getIdMagazynu(): ?Magazyn
+    {
+        return $this->idMagazynu;
+    }
+
+    public function setIdMagazynu(?Magazyn $idMagazynu): self
+    {
+        $this->idMagazynu = $idMagazynu;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -95,5 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    
 
 }
