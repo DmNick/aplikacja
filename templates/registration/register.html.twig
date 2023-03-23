@@ -24,6 +24,11 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+div.checkbox.form-check.form-switch > div > div.form-check {
+  padding-left:0;
+}
+
 </style>
 {% endblock %}
 {% block body %}
@@ -41,9 +46,10 @@
             {{ form_row(registrationForm.plainPassword, {label: 'Hasło'}) }}
           </div>
           <div class="checkbox mb-3">
-            <label>
-                {{ form_row(registrationForm.agreeTerms, {label: 'Akceptuję regulamin serwisu'}) }}
-            </label>
+            {{ form_row(registrationForm.agreeTerms, {label: 'Akceptuję regulamin serwisu'}) }}
+          </div>
+          <div class="checkbox form-check form-switch">
+            {{ form_row(registrationForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch'}}) }}
           </div>
           <div class="mb-3">Masz już konto? <a href="{{ path('app_login') }}">Zaloguj się</a></div>
 

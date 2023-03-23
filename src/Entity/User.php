@@ -9,6 +9,7 @@ use App\Entity\TraitSpace\createdTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -32,6 +33,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Magazyn::class, inversedBy: 'users', cascade: ['ondelete'=>'persist', 'onupdate'=>'persist'])]
     private $idMagazynu;
+
+    
+    public function __toString()
+    {
+        return $this;
+    }
 
     
     public function getEmail(): ?string

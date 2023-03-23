@@ -39,6 +39,8 @@ class MagazynRepository extends ServiceEntityRepository
         }
     }
 
+    //public function getById(Magazyn $entity, )
+
 //    /**
 //     * @return Magazyn[] Returns an array of Magazyn objects
 //     */

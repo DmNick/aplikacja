@@ -26,6 +26,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+            //return new Response( var_dump($form)??null);
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -33,7 +34,10 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setIdMagazynu($entityManager->getReference(Magazyn::class, '2'));
+            if($form->get('addAdmin')->getData() == '1'){
+                $user->setRoles(["ROLE_ADMIN"]);
+            }
+            $user->setIdMagazynu($entityManager->getReference(Magazyn::class, 1));
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email

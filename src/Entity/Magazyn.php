@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TraitSpace\idTrait;
 use App\Repository\MagazynRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MagazynRepository::class)]
@@ -19,15 +19,16 @@ class Magazyn
     #[ORM\Column(length: 128, unique: true)]
     private ?string $nazwa = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $domyslny = 0;
-
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'idMagazynu', cascade: ['ondelete'=>'persist', 'onupdate'=>'persist'])]
     private $users;
+
+    #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Artykul::class)]
+    private \Doctrine\Common\Collections\Collection $artykuls;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->artykuls = new ArrayCollection();
     }
 
     public function getNazwa(): ?string
@@ -42,24 +43,10 @@ class Magazyn
         return $this;
     }
 
-    public function getDomyslny(): ?int
-    {
-        $domyslny = $this->domyslny;
-        
-        return $domyslny;
-    }
-
-    public function setDomyslny(int $domyslny): self
-    {
-        $this->domyslny = $domyslny;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, User>
      */
-    public function getUsers(): Collection
+    public function getUsers(): ArrayCollection
     {
         return $this->users;
     }
@@ -80,6 +67,36 @@ class Magazyn
             // set the owning side to null (unless already changed)
             if ($user->getIdMagazynu() === $this) {
                 $user->setIdMagazynu(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection<int, Artykul>
+     */
+    public function getArtykuls(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->artykuls;
+    }
+
+    public function addArtykul(Artykul $artykul): self
+    {
+        if (!$this->artykuls->contains($artykul)) {
+            $this->artykuls->add($artykul);
+            $artykul->setMagazyn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtykul(Artykul $artykul): self
+    {
+        if ($this->artykuls->removeElement($artykul)) {
+            // set the owning side to null (unless already changed)
+            if ($artykul->getMagazyn() === $this) {
+                $artykul->setMagazyn(null);
             }
         }
 

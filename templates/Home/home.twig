@@ -4,7 +4,11 @@
 {% endblock %}
 {% block container %}
     <div class="container">
-        <div class="col-6 float-left">left</div>
-        <div class="col-6 float-left">right</div>
     </div>
+    {% if app.user.idMagazynu is empty %}
+    <div class="container">
+        <div class="col-12 float-left">Wybierz <a href="magazyn">magazyn</a></div>
+    </div>
+    {% endif %}
+
 {% endblock %}
