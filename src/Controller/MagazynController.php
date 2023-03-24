@@ -19,7 +19,7 @@ class MagazynController extends AbstractController
     #[Route('/magazyn/add', name: 'app_magazyn')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-
+        $request->request->get('nazwa');
         $magazyn = new Magazyn();
         $form = $this->createForm(MagazynType::class, $magazyn);
         $form->handleRequest($request);
@@ -30,74 +30,41 @@ class MagazynController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-
-            
-                $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
-                $idMagazynu = $form->getData()->getId();
-                //return new Response(var_dump($idMagazynu)??null);
-                //$users = $form -> getData() -> getUsers() -> getValues();
-                $usersForm = $form -> getData();
-                $usersForm2 = $usersForm->getUsers();
-                
-                
-                $users = $_POST['magazyn']['users']??'';
-                //$key = [];
-                
-                //return new Response(var_dump($key)??null);
-                //$request->request->get('users');
-                //$usersId = $users -> getId();
-
-                //$html = $form -> getNazwa();
-                // $html = 'pusto';
-                if (isset($users) && !empty($users)){
-                //  $html = '';
-                    // foreach($users as $key => $item){
-                    //     //$html .= $key." => ".$item."<br>";
-                    //     $form -> getData() -> addUser($entityManager->getReference(User::class, $item));
-                    // }
-
-                    // $UserRepository = $entityManager -> getRepository(User::class);
-                    // foreach ($UserRepository->findById($users) as $obj => $item) {
-                    //     $obj->setIdMagazynu(array_search($entityManager->getReference(Magazyn::class, $item)->getId(), $users));
-                    // }
+            //return new Response(dump($form -> getData() -> getUsers()[2] -> getId()));
+            $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
+            $idMagazynu = $form->getData()->getId();
+            //return new Response(var_dump($idMagazynu)??null);
+            //$users = $form -> getData() -> getUsers() -> getValues();
+            $usersForm = $form -> getData();
+            $usersForm2 = $usersForm->getUsers();
+            $entityManager->persist($magazyn);
+            $entityManager->flush();
+            //return new Response(var_dump($request->getData())??null);
+            $html = '';
+            foreach ($usersForm2 as $item){
+                //$key[] = $item->getId();
+                $key[] = $item;
+                //$magazyn -> addUser($item);
+                //$key[] = $item;
+                foreach($key as $value => $e){
+                    //$html .= $value." => ".$e."<br>";
+                    $form -> getData() -> addUser($e);
                     
                 }
-                //$form -> getData() -> addUser($entityManager->getReference(User::class, '1'));
-                // $html = '';
-                // $person = $entityManager->getRepository(User::class)->findAll($users);
-                // foreach($person as $key => $item){
-                //     $html .= $key.' => '.$item."<br>";
-                // }
-                // $html='';
-                //$data = json_decode($form->getData(), true);
-                //$form2 = $users->createForm(UserCollectionType::class, ['users' => $users]);
-                //$form2->handleRequest($request);
-                //return new Response( print_r($html));
-                //return new Response( print_r($html));
-                //return new Response( print_r($users(7) -> getKeys()));
-            
-            
-
-            //return new Response( var_dump($formOne)??null);
-            //$magazyn->setDomyslny('0');
-            //$form -> getData() -> addUser($entityManager->getReference(User::class, 1));
-            //$key = [];
-            foreach ($usersForm2 as $item){
-                $key = $item->getId();
-                //$form -> getData() -> addUser($entityManager->getReference(User::class, $key));
-                // $person = $entityManager->getRepository(User::class)->findOneBy(['id' => $key]);
-                // $form -> getData() -> addUser($person);
-                // $entityManager->flush();
-                $persons = $entityManager->getRepository(User::class)->findBy(['id'=>$key]);
-                $form -> getData() -> addUser($entityManager->getReference(User::class, 1));
-
+                
             }
+            
+            //return new Response(dump($html));
+            //$magazyn -> addUser($entityManager->getReference(User::class, $form -> getData() -> getUsers()[2] -> getId()));
             $form -> getData() -> addUser($entityManager->getReference(User::class, 1));
-            $entityManager->persist($magazyn);
+            //$form -> getData() -> addUser($entityManager->getReference(User::class, 3));
+            //$form -> getData() -> addUser($entityManager->getReference(User::class, 22));
+            //return var_dump($magazyn);
+            
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_magazyn_show');//, ['completed' => true, 'name' => $magazyn->getNazwa()]);
+            //return $this->redirectToRoute('app_magazyn_show');//, ['completed' => true, 'name' => $magazyn->getNazwa()]);
         }
         
         return $this->render('magazyn/add.html.twig', [

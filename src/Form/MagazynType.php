@@ -4,15 +4,11 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\Magazyn;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MagazynType extends AbstractType
@@ -29,7 +25,7 @@ class MagazynType extends AbstractType
             //     ],
             // ])
             ->add('users', EntityType::class, [
-                //'mapped' => false,
+                //'mapped' => true,
                 //'data_class' => User::class,
                 // 'constraints' => [
                 //     new Type(\User::class),
@@ -39,7 +35,11 @@ class MagazynType extends AbstractType
                 'choice_label' => 'email',
                 'multiple' => true,
                 'expanded' => true,
-                'required' => false
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.id', 'ASC');
+                },
             ])
             ;
     }

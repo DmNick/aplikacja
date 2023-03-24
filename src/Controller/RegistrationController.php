@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
             if($form->get('addAdmin')->getData() == '1'){
                 $user->setRoles(["ROLE_ADMIN"]);
             }
-            $user->setIdMagazynu($entityManager->getReference(Magazyn::class, 1));
+            //$user->setIdMagazynu($entityManager->getReference(Magazyn::class, 1));
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
