@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodaj użytkownika{% endblock %}
+{% block customcss %}
+<style>
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+div.checkbox.form-check.form-switch > div > div.form-check {
+  padding-left:0;
+}
+
+</style>
+{% endblock %}
+{% block main %}
+    
+
+    <main class="form-signin w-100 m-auto">
+      {% if name is defined %}
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						Sukces! Dodano użytkownika: {{ name }}
+						<button type="button" onclick="window.location.href='/adduser'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+			{% endif %}
+        <form action="{{ path('app_adduser') }}" method="post">
+          {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
+          <h1 class="h3 mb-3 fw-normal">Dodaj użytkownika</h1>
+          {{ form_start(registrationForm) }}
+          <div class="form-floating">
+            {{ form_row(registrationForm.email) }}
+          </div>
+          <div class="form-floating">
+            {{ form_row(registrationForm.plainPassword, {label: 'Hasło'}) }}
+          </div>
+          <div class="checkbox mb-3" hidden="hidden">
+            {{ form_row(registrationForm.agreeTerms, {label: 'Akceptuję regulamin serwisu',attr: {'checked':true},label_attr: {'hidden':true}}) }}
+          </div>
+          <div class="checkbox form-check form-switch">
+            {{ form_row(registrationForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch'}}) }}
+          </div>
+          <div class="form-floating">
+            {{ form_row(registrationForm.idMagazynu, {label: 'Wybierz domyślny magazyn'}) }}
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
+          {{ form_end(registrationForm) }}
+        </form>
+      </main>
+{% endblock %}

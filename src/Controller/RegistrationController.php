@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Magazyn;
 use App\Entity\User;
+use App\Form\AddUserFormType;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,45 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+            
+        ]);
+    }
+
+    #[Route('/adduser', name: 'app_adduser')]
+    public function adduser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = new User();
+        $form = $this->createForm(AddUserFormType::class, $user);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            //return new Response( var_dump($form->getData()->getIdMagazynu()->getId())??null);
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            if($form->get('addAdmin')->getData() == '1'){
+                $user->setRoles(["ROLE_ADMIN"]);
+            }
+            $user -> setIdMagazynu($form->getData()->getIdMagazynu());
+            //$user->setIdMagazynu($entityManager->getReference(Magazyn::class, 1));
+            $entityManager->persist($user);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
+
+            //return $this->redirectToRoute('app_login');
+            return $this->render('registration/add.html.twig', [
+                'registrationForm' => $form->createView(),
+                'name' => $user->getEmail(),
+            ]);
+        }
+
+        return $this->render('registration/add.html.twig', [
             'registrationForm' => $form->createView(),
             
         ]);

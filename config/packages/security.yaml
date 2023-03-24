@@ -36,7 +36,7 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/magazyn, role: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/artykul, roles: ROLE_USER }
          - { path: ^/login, role: PUBLIC_ACCESS }
          - { path: ^/register, role: PUBLIC_ACCESS }
          - { path: ^/, role: ROLE_USER }

@@ -26,13 +26,15 @@ class MagazynController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
+            $nazwa2 = $form["users"] -> getData()[0] -> getEmail(); //POPRAWNIE WYŚWIETLENIE PĘTLI Z EMAILEM
+            //return new Response(dump($nazwa2));
             $usersForm = $form -> getData();
             $usersForm2 = $usersForm->getUsers();
             $entityManager->persist($magazyn);
             $entityManager->flush();
             $magazynRepository = $entityManager -> getRepository(Magazyn::class);
             $magazynFind = $magazynRepository->findOneBy(['nazwa' => $nazwa]);
-            $html = '';
+
             foreach ($usersForm2 as $item){
                 $UserRepository = $entityManager -> getRepository(User::class);
                 $userMagazyn = $UserRepository -> findOneBy(['id' => $item->getId()]);
