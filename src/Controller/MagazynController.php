@@ -23,48 +23,25 @@ class MagazynController extends AbstractController
         $magazyn = new Magazyn();
         $form = $this->createForm(MagazynType::class, $magazyn);
         $form->handleRequest($request);
-        
-        // if ($request){
-        // var_dump("test");die();
-        // }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            //return new Response(dump($form -> getData() -> getUsers()[2] -> getId()));
             $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
-            $idMagazynu = $form->getData()->getId();
-            //return new Response(var_dump($idMagazynu)??null);
-            //$users = $form -> getData() -> getUsers() -> getValues();
             $usersForm = $form -> getData();
             $usersForm2 = $usersForm->getUsers();
             $entityManager->persist($magazyn);
             $entityManager->flush();
-            //return new Response(var_dump($request->getData())??null);
+            $magazynRepository = $entityManager -> getRepository(Magazyn::class);
+            $magazynFind = $magazynRepository->findOneBy(['nazwa' => $nazwa]);
             $html = '';
             foreach ($usersForm2 as $item){
-                //$key[] = $item->getId();
-                $key[] = $item;
-                //$magazyn -> addUser($item);
-                //$key[] = $item;
-                foreach($key as $value => $e){
-                    //$html .= $value." => ".$e."<br>";
-                    $form -> getData() -> addUser($e);
-                    
-                }
-                
+                $UserRepository = $entityManager -> getRepository(User::class);
+                $userMagazyn = $UserRepository -> findOneBy(['id' => $item->getId()]);
+                $userMagazyn -> setIdMagazynu($entityManager->getReference(Magazyn::class, $magazynFind->getId()));
             }
-            
-            //return new Response(dump($html));
-            //$magazyn -> addUser($entityManager->getReference(User::class, $form -> getData() -> getUsers()[2] -> getId()));
-            $form -> getData() -> addUser($entityManager->getReference(User::class, 1));
-            //$form -> getData() -> addUser($entityManager->getReference(User::class, 3));
-            //$form -> getData() -> addUser($entityManager->getReference(User::class, 22));
-            //return var_dump($magazyn);
-            
-            $entityManager->flush();
-            // do anything else you need here, like send an email
 
-            //return $this->redirectToRoute('app_magazyn_show');//, ['completed' => true, 'name' => $magazyn->getNazwa()]);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_magazyn_show', ['completed' => true, 'name' => $magazyn->getNazwa()]);
         }
         
         return $this->render('magazyn/add.html.twig', [
@@ -86,8 +63,7 @@ class MagazynController extends AbstractController
             $aktywnyMagazyn = $userMagazyn -> getIdMagazynu() -> getId();
             $aktywnyMagazynNazwa = $userMagazyn -> getIdMagazynu() -> getNazwa();
         }
-        //return new Response( var_dump($this -> json([$aktywnyMagazyn -> getId()]))??null );
-        //return new Response(var_dump($this->getUser()->getIdMagazynu())??null);
+
         return $this->render('magazyn/index.html.twig', ['result' => $magazyny, 'aktywny' => $aktywnyMagazyn??null, 'aktywnyNazwa' => $aktywnyMagazynNazwa??"BRAK" ]);
     }
 
@@ -98,10 +74,7 @@ class MagazynController extends AbstractController
         $postOne = $postUserRepository -> findOneBy(['id' => $this->getUser()->getId()]);
         $postOne -> setIdMagazynu($entityManager->getReference(Magazyn::class, $id));
         $entityManager -> flush();
-        //$user = $entityManager->getRepository(User::class)->findAll();
-        
-        //return new Response($this -> json(['user'=>$postTwo]));
-        //return new Response(var_dump($postOne -> getIdMagazynu($entityManager->getReference(User::class, $postOne)))??null);
+
         return $this->redirectToRoute('app_magazyn_show');
     }
 }

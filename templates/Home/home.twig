@@ -5,10 +5,17 @@
 {% block container %}
     <div class="container">
     </div>
+    
+    
     {% if app.user.idMagazynu is empty %}
+    {% if is_granted('ROLE_ADMIN') %}
     <div class="container">
         <div class="col-12 float-left">Wybierz <a href="magazyn">magazyn</a></div>
     </div>
+    {% else %}
+    <div class="container">
+        <div class="col-12 float-left">Brak aktywnego magazynu, poproś administratora o przydzielenie magazynu</div>
+    </div>
     {% endif %}
-
+    {% endif %}
 {% endblock %}

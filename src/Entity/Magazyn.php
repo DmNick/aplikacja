@@ -20,7 +20,7 @@ class Magazyn
     private ?string $nazwa = null;
 
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'idMagazynu', cascade: ['ondelete'=>'persist', 'onupdate'=>'persist'])]
-    private $users;
+    private \Doctrine\Common\Collections\Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Artykul::class)]
     private \Doctrine\Common\Collections\Collection $artykuls;

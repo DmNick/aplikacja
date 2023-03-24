@@ -4,9 +4,10 @@
 
 {% block main %}
 
-<main class="form-signin col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
-  {% if get.completed is defined %} 
-  <div>Dodano: {{ get.name }} </div>
+<main class="col-12 col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
+  {% if app.request.query.get("name") is null %}
+  {% else %}
+  <div>Dodano: {{ app.request.query.get("name") }} </div>
   {% endif %}
     <form action="{{ path('app_magazyn') }}" method="post">
       {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
