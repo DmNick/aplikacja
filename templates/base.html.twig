@@ -34,7 +34,7 @@
                     </li>
                     {% if app.user.idMagazynu.nazwa is defined %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Asortyment</a>
+                        <a class="nav-link" href="/artykul">Asortyment</a>
                     </li>
                     
                     <li class="nav-item">
@@ -49,17 +49,19 @@
                             aria-expanded="false">Witaj {{ app.user.email }}!
                             <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
                                 class="rounded-circle"></a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Wprowadenie towaru</a></li>
-                            <li><a class="dropdown-item" href="#">Wydanie towaru</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end" id="menu">
+                            <li><a class="dropdown-item" href="/przyjecia">Wprowadenie towaru</a></li>
+                            <li><a class="dropdown-item" href="/wydania">Wydanie towaru</a></li>
                             <li><a class="dropdown-item" href="#">Profil</a></li>
                             {% if is_granted('ROLE_ADMIN') %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/magazyn">Zmień magazyn</a></li>
+                            <li><a class="dropdown-item" href="/magazyn">Panel magazynów</a></li>
                             <li><a class="dropdown-item" href="/magazyn/add">Dodaj magazyn</a></li>
-                            <li><a class="dropdown-item" href="/adduser">Dodaj użytkownika</a></li>
+                            <li><a class="dropdown-item" href="/user">Panel użytkowników</a></li>
+                            <li><a class="dropdown-item" href="/user/add">Dodaj użytkownika</a></li>
+                            <li><a class="dropdown-item" href="/artykul">Panel artykułów</a></li>
                             <li><a class="dropdown-item" href="/artykul/add">Dodaj artykuł</a></li>
                             {% endif %}
                             <li>
@@ -77,6 +79,22 @@
         </div>
     </nav>
     </header>
+    {% block breadcrumbALL %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+            <li class="breadcrumb-item">
+              <a class="link-body-emphasis" href="/">
+                <img src="/logo.svg" alt="" width="16" height="16">
+                <span class="visually-hidden">Home</span>
+              </a>
+            </li>
+              {% block breadcrumb %}
+            {% endblock %}
+          </ol>
+        </nav>
+      </div>
+    {% endblock %}
     {% endblock header %}
 
     

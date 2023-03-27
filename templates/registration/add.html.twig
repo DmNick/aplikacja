@@ -31,14 +31,24 @@ div.checkbox.form-check.form-switch > div > div.form-check {
 
 </style>
 {% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a class="link-body-emphasis fw-semibold text-decoration-none" href="/user">Panel użytkoników</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Dodaj
+</li>
+{% endblock %}
+
 {% block main %}
     
 
-    <main class="form-signin w-100 m-auto">
+    <main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
       {% if name is defined %}
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
 						Sukces! Dodano użytkownika: {{ name }}
-						<button type="button" onclick="window.location.href='/adduser'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<button type="button" onclick="window.location.href='/user/add'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 					</div>
 			{% endif %}
         <form action="{{ path('app_adduser') }}" method="post">

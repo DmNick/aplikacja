@@ -6,6 +6,7 @@ use App\Entity\Magazyn;
 use App\Entity\User;
 use App\Form\AddUserFormType;
 use App\Form\RegistrationFormType;
+use App\Form\UserEditFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +53,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/adduser', name: 'app_adduser')]
+    #[Route('/user/add', name: 'app_adduser')]
     public function adduser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
 
@@ -89,5 +90,58 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
             
         ]);
+    }
+
+
+    #[Route('/user', name: 'app_user')]
+    public function user(EntityManagerInterface $entityManager): Response
+    {
+        $userRepository = $entityManager -> getRepository(User::class);
+        $users = $userRepository->findAll();
+
+        return $this->render('registration/user.html.twig', ['result' => $users]);
+    }
+
+
+    #[Route('/user/edit/{id}', name: 'app_edituser')]
+    public function edituser(Request $request, EntityManagerInterface $entityManager, User $user, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        //$userRepository = $entityManager -> getRepository(User::class);
+        //$user = $userRepository->findOneBy(['id'=> $id]);
+
+        $form = $this->createForm(UserEditFormType::class,$user);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($form->get('plainPassword')->getData()){
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            }
+
+            if($form->get('addAdmin')->getData() == '1'){
+                $user->setRoles(["ROLE_ADMIN"]);
+            }
+            else {
+                $user->setRoles([]);
+            }
+
+            if($form->getData()->getIdMagazynu()){
+                $user -> setIdMagazynu($form->getData()->getIdMagazynu());
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user', ['name' => $user->getEmail()]);
+
+        }
+
+        return $this->render('registration/edit.html.twig', [
+            'result' => $user, 
+            'UserEditFormForm' => $form->createView(),]);
     }
 }

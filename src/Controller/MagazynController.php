@@ -26,7 +26,7 @@ class MagazynController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
-            $nazwa2 = $form["users"] -> getData()[0] -> getEmail(); //POPRAWNIE WYŚWIETLENIE PĘTLI Z EMAILEM
+            //$nazwa2 = $form["users"] -> getData()[0] -> getEmail(); //POPRAWNIE WYŚWIETLENIE PĘTLI Z EMAILEM
             //return new Response(dump($nazwa2));
             $usersForm = $form -> getData();
             $usersForm2 = $usersForm->getUsers();

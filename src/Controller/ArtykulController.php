@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtykulController extends AbstractController
 {
     #[Route('/artykul/add', name: 'app_artykul_add')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function artykuladd(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $artykul = new Artykul();
@@ -23,6 +23,7 @@ class ArtykulController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $idMagazynu = $this->getUser()->getIdMagazynu();
             $artykul -> setMagazyn($idMagazynu);
+            $artykul -> setIlosc(0);
             $entityManager->persist($artykul);
             $entityManager->flush();
         }
@@ -32,5 +33,17 @@ class ArtykulController extends AbstractController
             'artykulForm' => $form->createView(),
             'name' => $artykul -> getNazwa(),
         ]);
+    }
+
+    #[Route('/artykul', name: 'app_artykul')]
+    public function index(EntityManagerInterface $entityManager): Response
+    {
+
+        $artykulRepository = $entityManager -> getRepository(Artykul::class);
+        $idMagazynu = $this->getUser()->getIdMagazynu();
+        //return new Response(var_dump($idMagazynu->getNazwa()));
+        $artykuly = $artykulRepository->findBy(['magazyn' => $idMagazynu]);
+
+        return $this->render('artykul/index.html.twig', ['result' => $artykuly]);
     }
 }

@@ -25,10 +25,14 @@ class Magazyn
     #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Artykul::class)]
     private \Doctrine\Common\Collections\Collection $artykuls;
 
+    #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Przyjecia::class, orphanRemoval: true)]
+    private Collection $przyjecias;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->artykuls = new ArrayCollection();
+        $this->przyjecias = new ArrayCollection();
     }
 
     public function getNazwa(): ?string
@@ -97,6 +101,36 @@ class Magazyn
             // set the owning side to null (unless already changed)
             if ($artykul->getMagazyn() === $this) {
                 $artykul->setMagazyn(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Przyjecia>
+     */
+    public function getPrzyjecias(): Collection
+    {
+        return $this->przyjecias;
+    }
+
+    public function addPrzyjecia(Przyjecia $przyjecia): self
+    {
+        if (!$this->przyjecias->contains($przyjecia)) {
+            $this->przyjecias->add($przyjecia);
+            $przyjecia->setMagazyn($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrzyjecia(Przyjecia $przyjecia): self
+    {
+        if ($this->przyjecias->removeElement($przyjecia)) {
+            // set the owning side to null (unless already changed)
+            if ($przyjecia->getMagazyn() === $this) {
+                $przyjecia->setMagazyn(null);
             }
         }
 

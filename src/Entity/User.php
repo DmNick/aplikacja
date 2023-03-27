@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TraitSpace\idTrait;
 use App\Repository\UserRepository;
@@ -33,6 +35,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Magazyn::class, inversedBy: 'users', cascade: ['ondelete'=>'persist', 'onupdate'=>'persist'])]
     private $idMagazynu;
+
+    #[ORM\OneToMany(mappedBy: 'wprowadzil', targetEntity: Przyjecia::class)]
+    private Collection $przyjecias;
+
+    public function __construct()
+    {
+        $this->przyjecias = new ArrayCollection();
+    }
 
     
     public function __toString()
@@ -116,6 +126,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Przyjecia>
+     */
+    public function getPrzyjecias(): Collection
+    {
+        return $this->przyjecias;
+    }
+
+    public function addPrzyjecia(Przyjecia $przyjecia): self
+    {
+        if (!$this->przyjecias->contains($przyjecia)) {
+            $this->przyjecias->add($przyjecia);
+            $przyjecia->setWprowadzil($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrzyjecia(Przyjecia $przyjecia): self
+    {
+        if ($this->przyjecias->removeElement($przyjecia)) {
+            // set the owning side to null (unless already changed)
+            if ($przyjecia->getWprowadzil() === $this) {
+                $przyjecia->setWprowadzil(null);
+            }
+        }
+
+        return $this;
     }
 
     

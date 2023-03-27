@@ -12,3 +12,8 @@ import './styles/app.scss';
 import './bootstrap.js';
 const $ = require('jquery');
 import 'bootstrap';
+//require('bootstrap/dist/js/bootstrap.bundle');
+
+
+
+

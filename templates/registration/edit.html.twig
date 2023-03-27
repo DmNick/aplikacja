@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edytuj użytkownika{% endblock %}
+{% block customcss %}
+<style>
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+div.checkbox.form-check.form-switch > div > div.form-check {
+  padding-left:0;
+}
+
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a class="link-body-emphasis fw-semibold text-decoration-none" href="/user">Panel użytkoników</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Edytuj
+</li>
+{% endblock %}
+
+{% block main %}
+    
+
+    <main class="form-signin w-100 m-auto">
+        <form action="{{ path('app_edituser', { 'id': result.id }) }}" method="post">
+          {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
+          <h1 class="h3 mb-3 fw-normal">Edycja użytkownika {{ result.email }}</h1>
+          {{ form_start(UserEditFormForm) }}
+          <div class="form-floating" {% if result.roles == '["ROLE_ADMIN"]' %}style="color: red"{% endif %}>
+            {{ form_row(UserEditFormForm.email) }}
+          </div>
+          <div class="form-floating">
+            {{ form_row(UserEditFormForm.plainPassword, {label: 'Hasło'}) }}
+          </div>
+          <div class="form-floating">
+            {{ form_row(UserEditFormForm.idMagazynu, {label: 'Wybierz domyślny magazyn'}) }}
+          </div>
+          <div class="checkbox form-check form-switch">
+            {% if result.roles == "[]" %}
+              {{ form_row(UserEditFormForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch'}}) }}
+            {% else %}
+              {{ form_row(UserEditFormForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch', 'checked':true}}) }}
+            {% endif %}
+            
+            
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Edytuj</button>
+          {{ form_end(UserEditFormForm) }}
+        </form>
+      </main>
+{% endblock %}

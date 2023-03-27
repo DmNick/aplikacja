@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Przyjęcie towaru{% endblock %}
+
+{% block main %}
+<main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
+    <form
+        action="{{ path('app_przyjecia') }}" method="post">
+        {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
+        <h1 class="h3 mb-3 fw-normal">Przyjęcie towaru</h1>
+        {{ form_start(przyjeciaForm) }}
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.artykul, {label: 'Artykuł'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.ilosc, {label: 'Ilość'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.vat, {label: 'Vat (%)'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.cenaNetto, {label: 'Cena jednostkowa'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.plik, {label: 'Załączniki'}) }}
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
+        {{ form_end(przyjeciaForm) }}
+    </form>
+</main>
+{% endblock %}

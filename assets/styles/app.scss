@@ -26,3 +26,9 @@ body {
   color: white;
   background-color: #842029;
 }
+
+#menu {
+  max-height: 60vh;
+  scroll-behavior: smooth;
+  overflow: auto;
+}
