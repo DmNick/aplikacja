@@ -18,8 +18,15 @@
         <button type="button" onclick="window.location.href='/magazyn'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
   {% endif %}
+  {% if app.request.query.get("brakmagazynu") is null %}
+    {% else %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Uwaga! Najpierw dodaj i wybierz magazyn!
+        <button type="button" onclick="window.location.href='/magazyn'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+  {% endif %}
   <p class="lead">
-    Kliknij, aby zmienić magazyn
+    Kliknij w nazwę, aby wybrać magazyn
   </p>
 <div class="list-group mb-3">
     {% for item in result %}

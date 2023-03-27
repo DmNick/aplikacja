@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Artykul;
 use App\Entity\Przyjecia;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,9 +17,12 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class PrzyjeciaFormType extends AbstractType
 {
+
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        //$idMagazynu = $this->getUser()->getIdMagazynu()->getId();
+        //dump($options);
+        //    exit();
         $builder
             ->add('artykul', EntityType::class,[
                 'label' => 'Wybierz artykuł',
@@ -27,9 +32,10 @@ class PrzyjeciaFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => true,
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => function (EntityRepository $er) use ($options){
                     return $er->createQueryBuilder('u')
-                        ->where('u.magazyn = 2')
+                        ->where('u.magazyn = :idmagazyn')
+                        ->setParameter('idmagazyn', $options['idmagazyn'])
                         ->orderBy('u.id', 'ASC');
                 },
             ])
@@ -48,6 +54,7 @@ class PrzyjeciaFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Przyjecia::class,
+            'idmagazyn' => 1
         ]);
     }
 }

@@ -39,9 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'wprowadzil', targetEntity: Przyjecia::class)]
     private Collection $przyjecias;
 
+    #[ORM\ManyToMany(targetEntity: Magazyn::class, inversedBy: 'magUsers')]
+    private Collection $listaMagazynow;
+
     public function __construct()
     {
         $this->przyjecias = new ArrayCollection();
+        $this->listaMagazynow = new ArrayCollection();
     }
 
     
@@ -154,6 +158,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $przyjecia->setWprowadzil(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Magazyn>
+     */
+    public function getListaMagazynow(): Collection
+    {
+        return $this->listaMagazynow;
+    }
+
+    public function addListaMagazynow(Magazyn $listaMagazynow): self
+    {
+        if (!$this->listaMagazynow->contains($listaMagazynow)) {
+            $this->listaMagazynow->add($listaMagazynow);
+        }
+
+        return $this;
+    }
+
+    public function removeListaMagazynow(Magazyn $listaMagazynow): self
+    {
+        $this->listaMagazynow->removeElement($listaMagazynow);
 
         return $this;
     }

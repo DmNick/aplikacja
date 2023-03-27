@@ -38,7 +38,7 @@
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" {% if is_granted('ROLE_ADMIN') %}href="/magazyn"{% endif %}>{% block aktywny %}Magazyn: {{app.user.idMagazynu.nazwa}}{% endblock %}</a>
+                        <a class="nav-link" href="/magazyn">{% block aktywny %}Magazyn: {{app.user.idMagazynu.nazwa}}{% endblock %}</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -53,11 +53,11 @@
                             <li><a class="dropdown-item" href="/przyjecia">Wprowadenie towaru</a></li>
                             <li><a class="dropdown-item" href="/wydania">Wydanie towaru</a></li>
                             <li><a class="dropdown-item" href="#">Profil</a></li>
-                            {% if is_granted('ROLE_ADMIN') %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="/magazyn">Panel magazynów</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li><a class="dropdown-item" href="/magazyn/add">Dodaj magazyn</a></li>
                             <li><a class="dropdown-item" href="/user">Panel użytkowników</a></li>
                             <li><a class="dropdown-item" href="/user/add">Dodaj użytkownika</a></li>

@@ -28,11 +28,15 @@ class Magazyn
     #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Przyjecia::class, orphanRemoval: true)]
     private Collection $przyjecias;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'listaMagazynow')]
+    private Collection $magUsers;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->artykuls = new ArrayCollection();
         $this->przyjecias = new ArrayCollection();
+        $this->magUsers = new ArrayCollection();
     }
 
     public function getNazwa(): ?string
@@ -132,6 +136,33 @@ class Magazyn
             if ($przyjecia->getMagazyn() === $this) {
                 $przyjecia->setMagazyn(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getMagUsers(): Collection
+    {
+        return $this->magUsers;
+    }
+
+    public function addMagUser(User $magUser): self
+    {
+        if (!$this->magUsers->contains($magUser)) {
+            $this->magUsers->add($magUser);
+            $magUser->addListaMagazynow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagUser(User $magUser): self
+    {
+        if ($this->magUsers->removeElement($magUser)) {
+            $magUser->removeListaMagazynow($this);
         }
 
         return $this;

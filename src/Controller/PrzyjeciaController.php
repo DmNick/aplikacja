@@ -15,13 +15,21 @@ class PrzyjeciaController extends AbstractController
     #[Route('/przyjecia', name: 'app_przyjecia')]
     public function index(Request $request,EntityManagerInterface $entityManager): Response
     {
-
+        //return new Response(dump($this->getUser()->getIdMagazynu()->getId()));
+        $CHECKidMagazynu = $this->getUser()->getIdMagazynu();
+        if(!$CHECKidMagazynu){
+            return $this->redirectToRoute('app_magazyn_show',['brakmagazynu'=>true]);
+        }
+        $isNull = $this->getUser()->getIdMagazynu()->getArtykuls()[0]??null;
+        if(null===$isNull){
+            return $this->redirectToRoute('app_artykul',['brak'=>true]);
+        }
         $przyjecia = new Przyjecia;
-        $form = $this -> createForm(PrzyjeciaFormType::class,$przyjecia);
+        $form = $this -> createForm(PrzyjeciaFormType::class,$przyjecia,['idmagazyn'=>$this->getUser()->getIdMagazynu()->getId()]);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $idMagazynu = $this->getUser()->getIdMagazynu();
             $idUser = $this->getUser();
             $nowaIlosc = $form->getData()->getIlosc();

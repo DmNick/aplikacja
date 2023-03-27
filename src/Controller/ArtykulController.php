@@ -15,7 +15,10 @@ class ArtykulController extends AbstractController
     #[Route('/artykul/add', name: 'app_artykul_add')]
     public function artykuladd(Request $request, EntityManagerInterface $entityManager): Response
     {
-
+        $idMagazynu = $this->getUser()->getIdMagazynu();
+        if(!$idMagazynu){
+            return $this->redirectToRoute('app_magazyn_show',['brakmagazynu'=>true]);
+        }
         $artykul = new Artykul();
         $form = $this->createForm(ArtykulFormType::class, $artykul);
         $form->handleRequest($request);
@@ -41,6 +44,9 @@ class ArtykulController extends AbstractController
 
         $artykulRepository = $entityManager -> getRepository(Artykul::class);
         $idMagazynu = $this->getUser()->getIdMagazynu();
+        if(!$idMagazynu){
+            return $this->redirectToRoute('app_magazyn_show',['brakmagazynu'=>true]);
+        }
         //return new Response(var_dump($idMagazynu->getNazwa()));
         $artykuly = $artykulRepository->findBy(['magazyn' => $idMagazynu]);
 

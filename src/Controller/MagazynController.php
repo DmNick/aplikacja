@@ -56,11 +56,24 @@ class MagazynController extends AbstractController
     #[Route('/magazyn', name: 'app_magazyn_show')]
     public function show(EntityManagerInterface $entityManager): Response
     {
-        $magazynRepository = $entityManager -> getRepository(Magazyn::class);
-        $magazyny = $magazynRepository->findAll();
+        
         $html = '';
         $UserRepository = $entityManager -> getRepository(User::class);
-        $userMagazyn = $UserRepository -> findOneBy(['id' => $this->getUser()->getId()]);
+        //$userMagazyn = $UserRepository -> findOneBy(['id' => $this->getUser()->getId()]);
+        $userMagazyn = $this->getUser();
+        $magazynRepository = $entityManager -> getRepository(Magazyn::class);
+
+        // dump(get_class($this->getUser()));
+        // die();
+
+        // $magazyny = $magazynRepository->findBy(['magUsers'=>$this->getUser()]);
+        
+
+        // $userMagazyn -> addListaMagazynow($entityManager->getReference(Magazyn::class, 2));
+        // $entityManager -> flush();
+        $magazyny = $magazynRepository->findAll();
+        
+        //return new Response(dump($userMagazyn->getListaMagazynow()[0]->getNazwa()));
         if($userMagazyn -> getIdMagazynu()){
             $aktywnyMagazyn = $userMagazyn -> getIdMagazynu() -> getId();
             $aktywnyMagazynNazwa = $userMagazyn -> getIdMagazynu() -> getNazwa();

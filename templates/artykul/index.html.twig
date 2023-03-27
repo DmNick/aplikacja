@@ -11,9 +11,15 @@
 {% block main %}
 
 <main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
-
+  {% if app.request.query.get("brak") is null %}
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      Uwaga! Brak artykułów. Dodaj artykuł przed rozpoczęciem przyjmowania!
+      <button type="button" onclick="window.location.href='/magazyn'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
   <p class="lead">
-    Lista artykułów magazynu {{ app.user.idMagazynu.nazwa }}
+    Lista artykułów magazynu {{ app.user.idMagazynu.nazwa ?? null }}
   </p>
 {# <div class="list-group mb-3">
     {% for item in result %}
