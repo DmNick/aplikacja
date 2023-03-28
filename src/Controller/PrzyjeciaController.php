@@ -37,6 +37,7 @@ class PrzyjeciaController extends AbstractController
             //die();
             
             $files = $_POST['przyjecia_form']['plik'];
+            if($files[0]){
             if(count($files)>4){
                 //dump("maks 4 pliki");
                 //die();
@@ -45,18 +46,34 @@ class PrzyjeciaController extends AbstractController
                     'przyjeciaForm' => $form->createView(),
                 ]);
             }
+
             $newFiles = [];
-            foreach ($files as $file){
-                
-                //$file->upload();
-                
-                //$entityManager->persist($przyjecia);
-                //$entityManager->flush();
-                $newFiles[] = $file;
-            }
-            $form->getData()->setPlik($newFiles);
+                foreach ($files as $file){
+                    $accept = ["pdf", "xml"];
+                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                   
+                    if (in_array($ext, $accept)) {
+                        $newFiles[] = $file;
+                    }
+                    else {
+                        return $this->render('przyjecia/index.html.twig', [
+                            'wrongExt' => true,
+                            'file' => $file,
+                            'przyjeciaForm' => $form->createView(),
+                        ]);
+                    }
+                    //$file->upload();
+                    
+                    //$entityManager->persist($przyjecia);
+                    //$entityManager->flush();
+                    
+                }
+                // dump($ext);
+                // die();
+
+                $form->getData()->setPlik($newFiles);
            // $form->getData()->addPlik(["dodatkowy plik.html"]);
-            
+            }
 
             $idMagazynu = $this->getUser()->getIdMagazynu();
             $idUser = $this->getUser();
@@ -79,6 +96,15 @@ class PrzyjeciaController extends AbstractController
 
             $entityManager->persist($przyjecia);
             $entityManager->flush();
+
+            return $this->render('przyjecia/index.html.twig', [
+                'done' => true,
+                'przyjeto' => $nowaIlosc,
+                'jednostka_miary' => $przyjecia->getArtykul()->getjednostkaMiary(),
+                'stan' => $ilosc,
+                'przyjeciaForm' => $form->createView(),
+            ]);
+            
         }
 
         return $this->render('przyjecia/index.html.twig', [

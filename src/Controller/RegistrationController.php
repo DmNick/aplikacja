@@ -141,7 +141,8 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/edit.html.twig', [
-            'result' => $user, 
+            'result' => $user,
+            'role' => $user->getRoles()[0],
             'UserEditFormForm' => $form->createView(),]);
     }
 }

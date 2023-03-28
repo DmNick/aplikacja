@@ -5,12 +5,23 @@
 {% block main %}
 
 <main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
-    {% if maxFiles == true %}
+    {% if maxFiles is defined %}
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         Uwaga! Maksymalna ilość plików wynosi: 4!
         <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    {% set maxFiles = false %}
+    {% endif %}
+    {% if wrongExt is defined %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Uwaga! Plik {{ file }} ma niedopowiednie rozszerzenie, Wybierz PDF lub XML!
+        <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% if done is defined %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Sukces! Pomyślnie przyjeto {{ przyjeto }} {{ jednostka_miary }} towaru!<br>Nowa ilość: {{ stan }} <a href="/artykul">Sprawdź stany</a>
+        <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     {% endif %}
     <form
         action="{{ path('app_przyjecia') }}" method="post">
@@ -32,9 +43,9 @@
         <div class="form-floating">
             {{ form_row(przyjeciaForm.plik, {label: 'Pliki (max. 4 pliki xml/pdf)'}) }}
         </div>
-        <div class="form-floating">
+        {# <div class="form-floating">
             {{ form_row(przyjeciaForm.file, {label: 'Pliki (max. 4 pliki xml/pdf)'}) }}
-        </div>
+        </div> #}
         <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
         {{ form_end(przyjeciaForm) }}
     </form>

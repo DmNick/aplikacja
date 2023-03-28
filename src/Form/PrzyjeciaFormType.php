@@ -68,13 +68,13 @@ class PrzyjeciaFormType extends AbstractType
                     'multiple' => 'multiple'
                 ],                
             ])
-            ->add('file',FileType::class,[
-                'data_class' => null,
-                'label' => 'Files',
-                'multiple' => true,
-                'mapped' => false,
-                'required' => false
-            ])
+            // ->add('file',FileType::class,[
+            //     'data_class' => null,
+            //     'label' => 'Files',
+            //     'multiple' => true,
+            //     'mapped' => false,
+            //     'required' => false
+            // ])
             //->add('wprowadzil')
             //->add('magazyn')
         ;

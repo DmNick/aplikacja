@@ -59,7 +59,7 @@ div.checkbox.form-check.form-switch > div > div.form-check {
             {{ form_row(UserEditFormForm.ListaMagazynow, {label: 'Przypisz dostępne magazyny'}) }}
           </div>
           <div class="checkbox form-check form-switch">
-            {% if result.roles == "[]" %}
+            {% if role == "ROLE_USER" %}
               {{ form_row(UserEditFormForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch'}}) }}
             {% else %}
               {{ form_row(UserEditFormForm.addAdmin, {label: 'Administrator',attr: {'class': 'form_switch', 'checked':true}}) }}

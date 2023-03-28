@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wydanie towaru{% endblock %}
+
+{% block main %}
+
+<main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
+    {% if done is defined %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Sukces! Pomyślnie wydano {{ wydano }} {{ jednostka_miary }} towaru!<br>Pozostało {{ stan }} {{ jednostka_miary }}<a href="/artykul">Sprawdź stany</a>
+        <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% if brak is defined %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Błąd! Nie można wydać {{ wydano }} {{ jednostka_miary }} towaru.<br>Dostępne {{ stan }} {{ jednostka_miary }} <a href="/artykul">Sprawdź stany</a>
+        <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <form
+        action="{{ path('app_wydania') }}" method="post">
+        {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
+        <h1 class="h3 mb-3 fw-normal">Wydanie towaru</h1>
+        {{ form_start(wydaniaForm, {'multipart': true}) }}
+        <div class="form-floating">
+            {{ form_row(wydaniaForm.artykul, {label: 'Artykuł'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(wydaniaForm.ilosc, {label: 'Ilość'}) }}
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
+        {{ form_end(wydaniaForm) }}
+    </form>
+</main>
+{% endblock %}
