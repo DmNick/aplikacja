@@ -31,12 +31,16 @@ class Magazyn
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'listaMagazynow')]
     private Collection $magUsers;
 
+    #[ORM\OneToMany(mappedBy: 'magazyn', targetEntity: Wydania::class, orphanRemoval: true)]
+    private Collection $wydanias;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->artykuls = new ArrayCollection();
         $this->przyjecias = new ArrayCollection();
         $this->magUsers = new ArrayCollection();
+        $this->wydanias = new ArrayCollection();
     }
 
     public function getNazwa(): ?string
@@ -163,6 +167,36 @@ class Magazyn
     {
         if ($this->magUsers->removeElement($magUser)) {
             $magUser->removeListaMagazynow($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wydania>
+     */
+    public function getWydanias(): Collection
+    {
+        return $this->wydanias;
+    }
+
+    public function addWydania(Wydania $wydania): self
+    {
+        if (!$this->wydanias->contains($wydania)) {
+            $this->wydanias->add($wydania);
+            $wydania->setMagazyn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWydania(Wydania $wydania): self
+    {
+        if ($this->wydanias->removeElement($wydania)) {
+            // set the owning side to null (unless already changed)
+            if ($wydania->getMagazyn() === $this) {
+                $wydania->setMagazyn(null);
+            }
         }
 
         return $this;

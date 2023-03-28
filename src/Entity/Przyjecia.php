@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TraitSpace\idTrait;
 use App\Entity\TraitSpace\createdTrait;
 use App\Repository\PrzyjeciaRepository;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PrzyjeciaRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -23,8 +25,8 @@ class Przyjecia
     #[ORM\Column]
     private ?float $cenaNetto = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $plik = null;
+    #[ORM\Column(nullable: true)]
+    private ?array $plik = null;
 
     #[ORM\ManyToOne(inversedBy: 'przyjecias')]
     #[ORM\JoinColumn(nullable: false)]
@@ -38,6 +40,7 @@ class Przyjecia
     #[ORM\JoinColumn(nullable: false)]
     private ?Artykul $artykul = null;
 
+    private $file; 
 
     public function getIlosc(): ?int
     {
@@ -75,14 +78,22 @@ class Przyjecia
         return $this;
     }
 
-    public function getPlik(): ?string
+    public function getPlik(): ?array
     {
-        return $this->plik;
+        $plik = $this->plik;
+        return $plik;
     }
 
-    public function setPlik(?string $plik): self
+    public function setPlik(array $plik): self
     {
         $this->plik = $plik;
+
+        return $this;
+    }
+
+    public function addPlik($plik): self
+    {
+        $this->plik[] = $plik;
 
         return $this;
     }
@@ -122,4 +133,5 @@ class Przyjecia
 
         return $this;
     }
+
 }

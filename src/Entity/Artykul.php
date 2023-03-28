@@ -35,9 +35,13 @@ class Artykul
     #[ORM\OneToMany(mappedBy: 'artykul', targetEntity: Przyjecia::class, orphanRemoval: true)]
     private Collection $przyjecias;
 
+    #[ORM\OneToMany(mappedBy: 'artykul', targetEntity: Wydania::class, orphanRemoval: true)]
+    private Collection $wydanias;
+
     public function __construct()
     {
         $this->przyjecias = new ArrayCollection();
+        $this->wydanias = new ArrayCollection();
     }
 
 
@@ -113,6 +117,36 @@ class Artykul
             // set the owning side to null (unless already changed)
             if ($przyjecia->getArtykul() === $this) {
                 $przyjecia->setArtykul(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wydania>
+     */
+    public function getWydanias(): Collection
+    {
+        return $this->wydanias;
+    }
+
+    public function addWydania(Wydania $wydania): self
+    {
+        if (!$this->wydanias->contains($wydania)) {
+            $this->wydanias->add($wydania);
+            $wydania->setArtykul($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWydania(Wydania $wydania): self
+    {
+        if ($this->wydanias->removeElement($wydania)) {
+            // set the owning side to null (unless already changed)
+            if ($wydania->getArtykul() === $this) {
+                $wydania->setArtykul(null);
             }
         }
 

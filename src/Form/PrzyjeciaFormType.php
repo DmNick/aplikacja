@@ -4,15 +4,15 @@ namespace App\Form;
 
 use App\Entity\Artykul;
 use App\Entity\Przyjecia;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class PrzyjeciaFormType extends AbstractType
@@ -43,7 +43,37 @@ class PrzyjeciaFormType extends AbstractType
             ->add('vat',NumberType::class)
             ->add('cenaNetto', NumberType::class)
             ->add('plik',FileType::class,[
+                'mapped'   => true,
+                'label'    => 'plik',
                 'required' => false,
+                'multiple' => true,
+                'constraints' => [
+                    new Count([
+                        'max' => 4,
+                        'maxMessage' => 'Maksymalnie 4 pliki'
+                    ]),
+                    new All([
+                        new File([
+                            'mimeTypes' => [
+                                'application/pdf',
+                                'application/x-pdf',
+                                'application/xml',
+                            ],
+                            'mimeTypesMessage' => 'Nieodpowiednie rozszerzenie pliku, tylko PDF/XML',
+                        ])
+                    ]),
+                ],
+                'attr' => [
+                    'accept' => '.pdf, .xml',
+                    'multiple' => 'multiple'
+                ],                
+            ])
+            ->add('file',FileType::class,[
+                'data_class' => null,
+                'label' => 'Files',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
             ])
             //->add('wprowadzil')
             //->add('magazyn')

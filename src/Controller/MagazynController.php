@@ -27,7 +27,8 @@ class MagazynController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $nazwa = $form -> getData() -> getNazwa(); //POPRAWNIE WYŚWIETLENIE NAZWY
             //$nazwa2 = $form["users"] -> getData()[0] -> getEmail(); //POPRAWNIE WYŚWIETLENIE PĘTLI Z EMAILEM
-            //return new Response(dump($nazwa2));
+            //dump($form -> getData());
+            //die();
             $usersForm = $form -> getData();
             $usersForm2 = $usersForm->getUsers();
             $entityManager->persist($magazyn);
@@ -38,7 +39,9 @@ class MagazynController extends AbstractController
             foreach ($usersForm2 as $item){
                 $UserRepository = $entityManager -> getRepository(User::class);
                 $userMagazyn = $UserRepository -> findOneBy(['id' => $item->getId()]);
-                $userMagazyn -> setIdMagazynu($entityManager->getReference(Magazyn::class, $magazynFind->getId()));
+                //$userMagazyn -> setIdMagazynu($entityManager->getReference(Magazyn::class, $magazynFind->getId()));
+                //$userMagazyn -> setIdMagazynu($form -> getData());
+                $userMagazyn -> addListaMagazynow($form -> getData());
             }
 
             $entityManager->flush();
@@ -62,18 +65,18 @@ class MagazynController extends AbstractController
         //$userMagazyn = $UserRepository -> findOneBy(['id' => $this->getUser()->getId()]);
         $userMagazyn = $this->getUser();
         $magazynRepository = $entityManager -> getRepository(Magazyn::class);
-
-        // dump(get_class($this->getUser()));
-        // die();
-
-        // $magazyny = $magazynRepository->findBy(['magUsers'=>$this->getUser()]);
+        $role = $this->getUser()->getRoles();
+        if(in_array("ROLE_ADMIN",$role)){
+            //dump($this->getUser()->getRoles()[0]);
+            //die();
+            $magazyny = $magazynRepository->findAll();
+        }
+        else {
+            $magazyny = $this->getUser()->getListaMagazynow();
+        }
+        
         
 
-        // $userMagazyn -> addListaMagazynow($entityManager->getReference(Magazyn::class, 2));
-        // $entityManager -> flush();
-        $magazyny = $magazynRepository->findAll();
-        
-        //return new Response(dump($userMagazyn->getListaMagazynow()[0]->getNazwa()));
         if($userMagazyn -> getIdMagazynu()){
             $aktywnyMagazyn = $userMagazyn -> getIdMagazynu() -> getId();
             $aktywnyMagazynNazwa = $userMagazyn -> getIdMagazynu() -> getNazwa();

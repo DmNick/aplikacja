@@ -52,13 +52,13 @@ class AddUserFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('idMagazynu', EntityType::class,[
+            ->add('ListaMagazynow', EntityType::class,[
                 'label' => 'Wybierz magazyn',
                 'class' => Magazyn::class,
                 'choice_label' => 'nazwa',
                 //'attr' => ['class' => 'selectpicker'],
-                'multiple' => false,
-                'expanded' => false,
+                'multiple' => true,
+                'expanded' => true,
                 'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')

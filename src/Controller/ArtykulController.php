@@ -52,4 +52,5 @@ class ArtykulController extends AbstractController
 
         return $this->render('artykul/index.html.twig', ['result' => $artykuly]);
     }
+
 }

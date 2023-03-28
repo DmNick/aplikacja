@@ -5,11 +5,18 @@
 {% block main %}
 
 <main class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-3 px-2 m-auto">
+    {% if maxFiles == true %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Uwaga! Maksymalna ilość plików wynosi: 4!
+        <button type="button" onclick="window.location.href='/przyjecia'" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% set maxFiles = false %}
+    {% endif %}
     <form
         action="{{ path('app_przyjecia') }}" method="post">
         {# <img class="mb-4" src="{{ asset('logo.svg') }}" alt="" width="72" height="57"> #}
         <h1 class="h3 mb-3 fw-normal">Przyjęcie towaru</h1>
-        {{ form_start(przyjeciaForm) }}
+        {{ form_start(przyjeciaForm, {'multipart': true}) }}
         <div class="form-floating">
             {{ form_row(przyjeciaForm.artykul, {label: 'Artykuł'}) }}
         </div>
@@ -23,7 +30,10 @@
             {{ form_row(przyjeciaForm.cenaNetto, {label: 'Cena jednostkowa'}) }}
         </div>
         <div class="form-floating">
-            {{ form_row(przyjeciaForm.plik, {label: 'Załączniki'}) }}
+            {{ form_row(przyjeciaForm.plik, {label: 'Pliki (max. 4 pliki xml/pdf)'}) }}
+        </div>
+        <div class="form-floating">
+            {{ form_row(przyjeciaForm.file, {label: 'Pliki (max. 4 pliki xml/pdf)'}) }}
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Dodaj</button>
         {{ form_end(przyjeciaForm) }}

@@ -27,9 +27,37 @@ class PrzyjeciaController extends AbstractController
         $przyjecia = new Przyjecia;
         $form = $this -> createForm(PrzyjeciaFormType::class,$przyjecia,['idmagazyn'=>$this->getUser()->getIdMagazynu()->getId()]);
         $form->handleRequest($request);
+        //$form->submit($request->request->get($form->getName()));
         
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //$uploads_directory = $this->getParameter('uploads_directory');
+            //$files2 = $form['file']->getData();
+            //dump($przyjecia);
+            //die();
             
+            $files = $_POST['przyjecia_form']['plik'];
+            if(count($files)>4){
+                //dump("maks 4 pliki");
+                //die();
+                return $this->render('przyjecia/index.html.twig', [
+                    'maxFiles' => true,
+                    'przyjeciaForm' => $form->createView(),
+                ]);
+            }
+            $newFiles = [];
+            foreach ($files as $file){
+                
+                //$file->upload();
+                
+                //$entityManager->persist($przyjecia);
+                //$entityManager->flush();
+                $newFiles[] = $file;
+            }
+            $form->getData()->setPlik($newFiles);
+           // $form->getData()->addPlik(["dodatkowy plik.html"]);
+            
+
             $idMagazynu = $this->getUser()->getIdMagazynu();
             $idUser = $this->getUser();
             $nowaIlosc = $form->getData()->getIlosc();
@@ -43,7 +71,11 @@ class PrzyjeciaController extends AbstractController
             $przyjecia->getArtykul()->setIlosc($ilosc);
 
 
-           
+            $file = $form->getData();
+            //dump($form['plik']->getData());
+            //dump($_POST['przyjecia_form']);
+            //dump($file);
+            //die();
 
             $entityManager->persist($przyjecia);
             $entityManager->flush();

@@ -56,7 +56,7 @@ div.checkbox.form-check.form-switch > div > div.form-check {
             {{ form_row(UserEditFormForm.plainPassword, {label: 'Hasło'}) }}
           </div>
           <div class="form-floating">
-            {{ form_row(UserEditFormForm.idMagazynu, {label: 'Wybierz domyślny magazyn'}) }}
+            {{ form_row(UserEditFormForm.ListaMagazynow, {label: 'Przypisz dostępne magazyny'}) }}
           </div>
           <div class="checkbox form-check form-switch">
             {% if result.roles == "[]" %}

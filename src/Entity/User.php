@@ -42,10 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Magazyn::class, inversedBy: 'magUsers')]
     private Collection $listaMagazynow;
 
+    #[ORM\OneToMany(mappedBy: 'wydal', targetEntity: Wydania::class)]
+    private Collection $wydanias;
+
     public function __construct()
     {
         $this->przyjecias = new ArrayCollection();
         $this->listaMagazynow = new ArrayCollection();
+        $this->wydanias = new ArrayCollection();
     }
 
     
@@ -182,6 +186,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeListaMagazynow(Magazyn $listaMagazynow): self
     {
         $this->listaMagazynow->removeElement($listaMagazynow);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wydania>
+     */
+    public function getWydanias(): Collection
+    {
+        return $this->wydanias;
+    }
+
+    public function addWydania(Wydania $wydania): self
+    {
+        if (!$this->wydanias->contains($wydania)) {
+            $this->wydanias->add($wydania);
+            $wydania->setWydal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWydania(Wydania $wydania): self
+    {
+        if ($this->wydanias->removeElement($wydania)) {
+            // set the owning side to null (unless already changed)
+            if ($wydania->getWydal() === $this) {
+                $wydania->setWydal(null);
+            }
+        }
 
         return $this;
     }
