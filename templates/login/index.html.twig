@@ -47,11 +47,11 @@ body {
       <h1 class="h3 mb-3 fw-normal">Logowanie</h1>
   
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" name="_username" placeholder="name@example.com" value="{{ last_username }}" required>
+        <input type="email" class="form-control" id="floatingInput" name="_username" placeholder="name@example2.com" value="{% if last_username is defined %}{{last_username}}{% else %}test@test2{% endif %}" required>
         <label for="floatingInput">Adres email</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="_password" placeholder="Password" required>
+        <input type="password" class="form-control" id="floatingPassword" name="_password" placeholder="Password" value="{% if last_username is defined %}{% else %}123123{% endif %}" required>
         <label for="floatingPassword">Hasło</label>
       </div>
       <div class="mb-3">Nie masz konta? <a href="{{ path('app_register') }}">Zarejestruj się</a></div>

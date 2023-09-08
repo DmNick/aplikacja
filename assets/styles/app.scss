@@ -1,6 +1,9 @@
 @import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.cdnfonts.com/css/rosa-sans');
+
 body {
-    background-color: lightgray;
+  font-family: 'Rosa Sans', sans-serif;
+  background-color: lightgray;
 }
 
 html,

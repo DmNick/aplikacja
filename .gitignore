@@ -25,3 +25,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+/phpmyadmin
+.env
+/public/h
+/public/iptv.m3u
