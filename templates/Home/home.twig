@@ -1,4 +1,9 @@
 {% extends "base.html.twig" %}
+
+{% block title %}
+    Strona główna projektu :)
+{% endblock %}
+
 {% block customcss %}
 <link rel="stylesheet" href="css/home.css">
 {% endblock %}
@@ -15,7 +20,7 @@
 {% if app.user.idMagazynu is empty %}
 
 <div class="container">
-    <div class="col-12 float-left">Wybierz <a href="magazyn">magazyn</a></div>
+    <div class="col-12 float-left">Wybierz <a href="{{ path('app_magazyn_show') }}">magazyn</a></div>
 </div>
 {% else %}
 <div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
@@ -25,7 +30,7 @@
                 <h4 class="my-0 fw-normal">Przyjęcia</h4>
             </div>
             <div class="card-body">
-                <button type="button" onclick="window.location.href='/przyjecia'" class="w-100 btn btn-lg btn-outline-success">Przejdź</button>
+                <a href="{{ path('app_przyjecia') }}" class="w-100 btn btn-lg btn-outline-success">Przejdź</a>
             </div>
         </div>
     </div>
@@ -35,7 +40,8 @@
                 <h4 class="my-0 fw-normal">Wydania</h4>
             </div>
             <div class="card-body">
-                <button type="button" onclick="window.location.href='/wydania'" class="w-100 btn btn-lg btn-outline-primary">Przejdź</button>
+                <a href="{{ path('app_wydania') }}" class="w-100 btn btn-lg btn-outline-primary">Przejdź</a>
+                {# <button type="button" onclick="window.location.href='{{ path('app_wydania') }}'" class="w-100 btn btn-lg btn-outline-primary">Przejdź</button> #}
             </div>
         </div>
     </div>

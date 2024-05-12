@@ -24,7 +24,7 @@
     <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" aria-label="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Projekt</a>
+            <a class="navbar-brand" href="{{ path('home') }}">Projekt</a>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarLogo" aria-controls="navbarLogo" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -38,11 +38,11 @@
                     </li>
                     {% if app.user.idMagazynu.nazwa is defined %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/artykul">Asortyment</a>
+                        <a class="nav-link" href="{{ path('app_artykul') }}">Asortyment</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="/magazyn">{% block aktywny %}Magazyn: {{app.user.idMagazynu.nazwa}}{% endblock %}</a>
+                        <a class="nav-link" href="{{ path('app_magazyn_show') }}">{% block aktywny %}Magazyn: {{app.user.idMagazynu.nazwa}}{% endblock %}</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -54,19 +54,19 @@
                             <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
                                 class="rounded-circle"></a>
                         <ul class="dropdown-menu dropdown-menu-end" id="menu">
-                            <li><a class="dropdown-item" href="/przyjecia">Wprowadenie towaru</a></li>
-                            <li><a class="dropdown-item" href="/wydania">Wydanie towaru</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_przyjecia') }}">Wprowadenie towaru</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_wydania') }}">Wydanie towaru</a></li>
                             <li><a class="dropdown-item" href="#">Profil</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/magazyn">Panel magazynów</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_magazyn_show') }}">Panel magazynów</a></li>
                             {% if is_granted('ROLE_ADMIN') %}
-                            <li><a class="dropdown-item" href="/magazyn/add">Dodaj magazyn</a></li>
-                            <li><a class="dropdown-item" href="/user">Panel użytkowników</a></li>
-                            <li><a class="dropdown-item" href="/user/add">Dodaj użytkownika</a></li>
-                            <li><a class="dropdown-item" href="/artykul">Panel artykułów</a></li>
-                            <li><a class="dropdown-item" href="/artykul/add">Dodaj artykuł</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_magazyn') }}">Dodaj magazyn</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_user') }}">Panel użytkowników</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_adduser') }}">Dodaj użytkownika</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_artykul') }}">Panel artykułów</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_artykul_add') }}">Dodaj artykuł</a></li>
                             {% endif %}
                             <li>
                                 <hr class="dropdown-divider">
@@ -88,7 +88,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
             <li class="breadcrumb-item">
-              <a class="link-body-emphasis" href="/">
+              <a class="link-body-emphasis" href="{{ path('home') }}">
                 <img src="/logo.svg" alt="" width="16" height="16">
                 <span class="visually-hidden">Home</span>
               </a>
@@ -114,7 +114,7 @@
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+            <a href="{{ path('home') }}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                 <img src="/logo.svg" alt="" width="30" height="24">
             </a>
             <span class="mb-3 mb-md-0 text-muted">&clubs; 2023 Dominik Banik</span>
